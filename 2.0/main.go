@@ -10,12 +10,24 @@ import (
 	"log"
 	"os"
 	"strings"
-
-	"./models"
+	"fmt"
+	"app/models"
+	"path/filepath"
+	"path"
 )
 
+func GetCurrentDirectory() string {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+ 	return strings.Replace(dir, "\\", "/", -1) 
+}
+
 func Openfile() (cookie []string) {
-	fi, err := os.Open("cookie.txt") //读取文件夹里的cookie.txt
+	cur := GetCurrentDirectory()
+	filep := path.Join(cur, "cookie.txt")
+	fi, err := os.Open(filep) //读取文件夹里的cookie.txt
 	if err != nil {
 		log.Println("No cookie.txt file")
 		os.Exit(0)
